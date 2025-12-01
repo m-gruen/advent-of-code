@@ -2,8 +2,8 @@
 
 var lines = File.ReadAllLines("input.txt");
 
-System.Console.WriteLine($"Part 1: {Part1(lines)}");
-System.Console.WriteLine($"Part 2: {Part2(lines)}");
+Console.WriteLine($"Part 1: {Part1(lines)}");
+Console.WriteLine($"Part 2: {Part2(lines)}");
 
 int Part1(string[] lines)
 {
@@ -12,26 +12,20 @@ int Part1(string[] lines)
 
     foreach (var line in lines)
     {
+        char direction = line[0];
         var dist = int.Parse(line[1..]);
 
-        if (line[..1] == "L")
+        if (direction == 'L')
         {
             currentNumber = (currentNumber - dist) % 100;
-
-            if (currentNumber < 0)
-            {
-                currentNumber += 100;
-            }
+            if (currentNumber < 0) { currentNumber += 100; }
         }
         else
         {
             currentNumber = (currentNumber + dist) % 100;
         }
 
-        if (currentNumber == 0)
-        {
-            zeroCount++;
-        }
+        if (currentNumber == 0) { zeroCount++; }
     }
 
     return zeroCount;
@@ -64,10 +58,7 @@ int Part2(string[] lines)
                 if (currentNumber == 100) { currentNumber = 0; }
             }
 
-            if (currentNumber == 0)
-            {
-                zeroCount++;
-            }
+            if (currentNumber == 0) { zeroCount++; }
         }
     }
 
