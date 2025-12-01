@@ -7,7 +7,34 @@ System.Console.WriteLine($"Part 2: {Part2(lines)}");
 
 int Part1(string[] lines)
 {
-    return 0;
+    int currentNumber = 50;
+    int zeroCount = 0;
+
+    foreach (var line in lines)
+    {
+        var dist = int.Parse(line[1..]);
+
+        if (line[..1] == "L")
+        {
+            currentNumber = (currentNumber - dist) % 100;
+
+            if (currentNumber < 0)
+            {
+                currentNumber += 100;
+            }
+        }
+        else
+        {
+            currentNumber = (currentNumber + dist) % 100;
+        }
+
+        if (currentNumber == 0)
+        {
+            zeroCount++;
+        }
+    }
+
+    return zeroCount;
 }
 
 
