@@ -33,7 +33,40 @@ long Part1(string text)
     return invalidIdSum;
 }
 
-int Part2(string text)
+long Part2(string text)
 {
-    return 0;
+    var idParts = text.Split(',');
+    long invalidIdSum = 0;
+
+    foreach (var idPart in idParts)
+    {
+        var ids = idPart.Split('-').Select(long.Parse).ToArray();
+
+        for (long id = ids[0]; id <= ids[1]; id++)
+        {
+            var idStr = id.ToString();
+            bool isInvalid = false;
+
+            for (int seqLength = 1; seqLength <= idStr.Length / 2; seqLength++)
+            {
+                if (idStr.Length % seqLength == 0)
+                {
+                    var sequence = idStr[..seqLength];
+                    var repeatedSequence = string.Concat(Enumerable.Repeat(sequence, idStr.Length / seqLength));
+                    if (repeatedSequence == idStr)
+                    {
+                        isInvalid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isInvalid)
+            {
+                invalidIdSum += id;
+            }
+        }
+    }
+
+    return invalidIdSum;
 }
