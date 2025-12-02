@@ -22,6 +22,7 @@ long Part1(string text)
                 var halfLength = idStr.Length / 2;
                 var firstHalf = idStr[..halfLength];
                 var secondHalf = idStr[halfLength..];
+
                 if (firstHalf == secondHalf)
                 {
                     invalidIdSum += id;
@@ -45,7 +46,6 @@ long Part2(string text)
         for (long id = ids[0]; id <= ids[1]; id++)
         {
             var idStr = id.ToString();
-            bool isInvalid = false;
 
             for (int seqLength = 1; seqLength <= idStr.Length / 2; seqLength++)
             {
@@ -53,17 +53,13 @@ long Part2(string text)
                 {
                     var sequence = idStr[..seqLength];
                     var repeatedSequence = string.Concat(Enumerable.Repeat(sequence, idStr.Length / seqLength));
+                    
                     if (repeatedSequence == idStr)
                     {
-                        isInvalid = true;
+                        invalidIdSum += id;
                         break;
                     }
                 }
-            }
-
-            if (isInvalid)
-            {
-                invalidIdSum += id;
             }
         }
     }
