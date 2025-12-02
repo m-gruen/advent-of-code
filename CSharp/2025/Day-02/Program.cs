@@ -1,9 +1,15 @@
-﻿// Advent of Code 2025: Day 2
+﻿using System.Text.RegularExpressions;
+
+// Advent of Code 2025: Day 2
 
 var text = File.ReadAllText("input.txt");
 
 Console.WriteLine($"Part 1: {Part1(text)}");
 Console.WriteLine($"Part 2: {Part2(text)}");
+
+Console.WriteLine("\nUsing Regex:");
+Console.WriteLine($"Part 1: {Part1Regex(text)}");
+Console.WriteLine($"Part 2: {Part2Regex(text)}");
 
 long Part1(string text)
 {
@@ -65,4 +71,61 @@ long Part2(string text)
     }
 
     return invalidIdSum;
+}
+
+
+long Part1Regex(string text)
+{
+    var idParts = text.Split(',');
+    long invalidIdSum = 0;
+    var regex = PartOneRegex();
+
+    foreach (var idPart in idParts)
+    {
+        var ids = idPart.Split('-').Select(long.Parse).ToArray();
+
+        for (long id = ids[0]; id <= ids[1]; id++)
+        {
+            var idStr = id.ToString();
+
+            if (regex.IsMatch(idStr))
+            {
+                invalidIdSum += id;
+            }
+        }
+    }
+
+    return invalidIdSum;
+}
+
+long Part2Regex(string text)
+{
+    var idParts = text.Split(',');
+    long invalidIdSum = 0;
+    var regex = PartTwoRegex();
+
+    foreach (var idPart in idParts)
+    {
+        var ids = idPart.Split('-').Select(long.Parse).ToArray();
+
+        for (long id = ids[0]; id <= ids[1]; id++)
+        {
+            var idStr = id.ToString();
+            if (regex.IsMatch(idStr))
+            {
+                invalidIdSum += id;
+            }
+        }
+    }
+
+    return invalidIdSum;
+}
+
+partial class Program
+{
+    [GeneratedRegex(@"^(\d+)\1$")]
+    private static partial Regex PartOneRegex();
+
+    [GeneratedRegex(@"^(\d+)\1+$")]
+    private static partial Regex PartTwoRegex();
 }
