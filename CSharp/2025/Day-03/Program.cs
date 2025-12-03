@@ -32,8 +32,38 @@ int Part1(string[] lines)
     return sum;
 }
 
-int Part2(string[] lines)
+long Part2(string[] lines)
 {
-    return 0;
-}
+    List<int> findhighest12Digits(List<int> remainingNumbers, List<int> shouldBeTwelveNumbers)
+    {
+        if (shouldBeTwelveNumbers.Count == 12)
+        {
+            return shouldBeTwelveNumbers;
+        }
 
+        int max = remainingNumbers[..^(12 - shouldBeTwelveNumbers.Count - 1)].Max();
+
+        int idx = remainingNumbers.IndexOf(max);
+        shouldBeTwelveNumbers.Add(max);
+        remainingNumbers.RemoveRange(0, idx + 1);
+        return findhighest12Digits(remainingNumbers, shouldBeTwelveNumbers);
+    }
+
+    long sum = 0;
+    foreach (var line in lines)
+    {
+        List<int> numbers = [.. line.Select(c => c - '0')];
+
+
+        var highest12Digits = findhighest12Digits(numbers, []);
+        long number = 0;
+        foreach (var digit in highest12Digits)
+        {
+            number = number * 10 + digit;
+        }
+
+        sum += number;
+    }
+
+    return sum;
+}
