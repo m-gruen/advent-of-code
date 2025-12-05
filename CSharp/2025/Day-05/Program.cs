@@ -25,9 +25,42 @@ int Part1(string text)
     return freshId;
 }
 
-int Part2(string text)
+long Part2(string text)
 {
-    return 0;
+    var (ranges, _) = ConvertInput(text);
+    var sortedRanges = ranges.OrderBy(r => r.from).ToList();
+
+    List<(long from, long to)> mergedRanges = [];
+
+    foreach (var current in sortedRanges)
+    {
+        if (mergedRanges.Count == 0)
+        {
+            mergedRanges.Add(current);
+            continue;
+        }
+
+        var lastIndex = mergedRanges.Count - 1;
+        var (lastFrom, lastTo) = mergedRanges[lastIndex];
+
+        if (current.from > lastTo + 1)
+        {
+            mergedRanges.Add(current);
+        }
+        else
+        {
+            long newTo = Math.Max(lastTo, current.to);
+            mergedRanges[lastIndex] = (lastFrom, newTo);
+        }
+    }
+
+    long validIdsCount = 0;
+    foreach (var (from, to) in mergedRanges)
+    {
+        validIdsCount += to - from + 1;
+    }
+
+    return validIdsCount;
 }
 
 ((long from, long to)[], long[]) ConvertInput(string text)
